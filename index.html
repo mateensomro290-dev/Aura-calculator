@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="day-mode">
+  <!-- Ambient Aura Lights in Background -->
+  <div class="aura-ambient aura-ambient-1" aria-hidden="true"></div>
+  <div class="aura-ambient aura-ambient-2" aria-hidden="true"></div>
+
+  <main class="app-container">
+    <!-- Header / Brand & Top Controls -->
+    <header class="aura-header">
+      <div class="brand">
+        <div class="brand-gem"></div>
+        <div class="brand-text">
+          <h1>Aura Calculator</h1>
+          <span class="brand-tagline">Precision & Elegance</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Sound Effect Toggle -->
+        <button id="soundToggle" class="icon-btn" title="Toggle Sound Feedback (Mute/Unmute)" aria-label="Toggle Sound">
+          <svg class="icon sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+          <svg class="icon sound-off hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+
+        <!-- History Drawer Toggle -->
+        <button id="historyToggle" class="icon-btn" title="View Calculation History" aria-label="History">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </button>
+
+        <!-- Scientific Mode Toggle -->
+        <button id="scientificToggle" class="icon-btn pill-btn" title="Toggle Scientific Mode" aria-label="Scientific Mode">
+          <span>fx</span>
+        </button>
+
+        <!-- Day / Night Mode Switcher Pill -->
+        <div class="theme-switch-wrapper">
+          <button id="themeToggle" class="theme-switch-btn" title="Switch between Day Mode & Night Mode" aria-label="Toggle Theme">
+            <span class="switch-pill">
+              <span class="icon-wrap sun-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <path d="M12 2v2"></path>
+                  <path d="M12 20v2"></path>
+                  <path d="M4.93 4.93l1.41 1.41"></path>
+                  <path d="M17.66 17.66l1.41 1.41"></path>
+                  <path d="M2 12h2"></path>
+                  <path d="M20 12h2"></path>
+                  <path d="M6.34 17.66l-1.41 1.41"></path>
+                  <path d="M19.07 4.93l-1.41 1.41"></path>
+                </svg>
+              </span>
+              <span class="icon-wrap moon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+              </span>
+            </span>
+            <span class="theme-label" id="themeLabel">Day</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Calculator Unit -->
+    <div class="calculator-chassis" id="calculatorChassis">
+      <!-- Glow Aura Halo around black body -->
+      <div class="chassis-aura-glow" aria-hidden="true"></div>
+
+      <!-- Display Section -->
+      <section class="calculator-display" aria-label="Calculator Screen">
+        <div class="display-top-bar">
+          <span class="mode-badge" id="modeBadge">DEG</span>
+          <span class="memory-badge hidden" id="memoryBadge">M</span>
+          <button id="copyBtn" class="copy-display-btn" title="Copy result to clipboard" aria-label="Copy result">
+            <svg class="icon copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span class="copy-tooltip" id="copyTooltip">Copied!</span>
+          </button>
+        </div>
+
+        <div class="expression-line" id="expressionDisplay" title="Current Expression"></div>
+        <div class="result-line-container">
+          <div class="result-line" id="resultDisplay" title="Result">0</div>
+        </div>
+      </section>
+
+      <!-- Keypad Section -->
+      <section class="calculator-keypad" aria-label="Calculator Keys">
+
+        <!-- Scientific Extension Row (Collapsible) -->
+        <div class="scientific-panel" id="scientificPanel" aria-hidden="true">
+          <button class="key key-sci" data-action="deg-rad" id="degRadBtn" title="Toggle Degrees/Radians">deg</button>
+          <button class="key key-sci" data-action="sin" title="Sine">sin</button>
+          <button class="key key-sci" data-action="cos" title="Cosine">cos</button>
+          <button class="key key-sci" data-action="tan" title="Tangent">tan</button>
+          <button class="key key-sci" data-action="ln" title="Natural Logarithm">ln</button>
+          <button class="key key-sci" data-action="log" title="Logarithm Base 10">log</button>
+          <button class="key key-sci" data-action="sqrt" title="Square Root">√</button>
+          <button class="key key-sci" data-action="square" title="Square (x²)">x²</button>
+          <button class="key key-sci" data-action="power" title="Power (xʸ)">xʸ</button>
+          <button class="key key-sci" data-action="pi" title="Pi (π)">π</button>
+          <button class="key key-sci" data-action="e" title="Euler's Constant (e)">e</button>
+          <button class="key key-sci" data-action="inv" title="Reciprocal (1/x)">1/x</button>
+        </div>
+
+        <!-- Main Keys Grid (Gray Tones on Black Body) -->
+        <div class="standard-keys-grid">
+          <!-- Row 1: Function / Clear Controls -->
+          <button class="key key-fn key-clear" data-action="clear-all" id="clearBtn" title="Clear All (Escape)">AC</button>
+          <button class="key key-fn" data-action="backspace" title="Backspace (⌫)">
+            <svg class="key-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+              <line x1="18" y1="9" x2="12" y2="15"></line>
+              <line x1="12" y1="9" x2="18" y2="15"></line>
+            </svg>
+          </button>
+          <button class="key key-fn" data-action="percent" title="Percentage (%)">%</button>
+          <button class="key key-op" data-action="operator" data-val="/" title="Divide (÷)">÷</button>
+
+          <!-- Row 2 -->
+          <button class="key key-fn key-paren" data-action="paren-open" title="Open Parenthesis (">(</button>
+          <button class="key key-fn key-paren" data-action="paren-close" title="Close Parenthesis">)</button>
+          <button class="key key-fn" data-action="negate" title="Toggle Positive / Negative (±)">±</button>
+          <button class="key key-op" data-action="operator" data-val="*" title="Multiply (×)">×</button>
+
+          <!-- Row 3 -->
+          <button class="key key-num" data-action="number" data-val="7">7</button>
+          <button class="key key-num" data-action="number" data-val="8">8</button>
+          <button class="key key-num" data-action="number" data-val="9">9</button>
+          <button class="key key-op" data-action="operator" data-val="-" title="Subtract (−)">−</button>
+
+          <!-- Row 4 -->
+          <button class="key key-num" data-action="number" data-val="4">4</button>
+          <button class="key key-num" data-action="number" data-val="5">5</button>
+          <button class="key key-num" data-action="number" data-val="6">6</button>
+          <button class="key key-op" data-action="operator" data-val="+" title="Add (+)">+</button>
+
+          <!-- Row 5 -->
+          <button class="key key-num" data-action="number" data-val="1">1</button>
+          <button class="key key-num" data-action="number" data-val="2">2</button>
+          <button class="key key-num" data-action="number" data-val="3">3</button>
+          <button class="key key-op key-equals-action" data-action="calculate" rowspan="2" id="equalsBtn" title="Calculate Result (=)">=</button>
+
+          <!-- Row 6 -->
+          <button class="key key-num key-zero" data-action="number" data-val="0">0</button>
+          <button class="key key-num" data-action="number" data-val="00">00</button>
+          <button class="key key-num" data-action="decimal" data-val=".">.</button>
+        </div>
+      </section>
+
+      <!-- History Side Drawer (Inside Calculator Body) -->
+      <aside class="history-drawer" id="historyDrawer" aria-label="Calculation History">
+        <div class="history-header">
+          <h3>History</h3>
+          <button id="clearHistoryBtn" class="clear-history-btn" title="Clear History">Clear</button>
+          <button id="closeHistoryBtn" class="close-history-btn" aria-label="Close History">✕</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <p class="history-empty">No calculations yet</p>
+        </div>
+      </aside>
+
+      <!-- Keyboard Shortcut Helper hint -->
+      <footer class="calculator-footer">
+        <span class="shortcut-hint">Keyboard friendly • Press <code>Esc</code> to clear</span>
+      </footer>
+    </div>
+
+    <!-- Quick Palette / Mood Glow Selectors -->
+    <div class="aura-mood-bar">
+      <span class="mood-title">Aura Glow:</span>
+      <button class="mood-dot active" data-glow="cyan" title="Cyan Aura" style="--dot-color: #06b6d4"></button>
+      <button class="mood-dot" data-glow="violet" title="Violet Aura" style="--dot-color: #8b5cf6"></button>
+      <button class="mood-dot" data-glow="emerald" title="Emerald Aura" style="--dot-color: #10b981"></button>
+      <button class="mood-dot" data-glow="amber" title="Amber Aura" style="--dot-color: #f59e0b"></button>
+      <button class="mood-dot" data-glow="rose" title="Rose Aura" style="--dot-color: #f43f5e"></button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,969 @@
+/* ==========================================================================
+   Aura Calculator - Modern High-Craft Styling
+   Theme: White background (Day Mode) / Dark Cosmic (Night Mode),
+          Black calculator body, Gray-colored keys, Luminous Aura Glows.
+   ========================================================================== */
+
+:root {
+  /* Dynamic Aura Color Tokens (defaults to Cyan) */
+  --aura-color: #06b6d4;
+  --aura-color-rgb: 6, 182, 212;
+  --aura-glow-soft: rgba(var(--aura-color-rgb), 0.18);
+  --aura-glow-intense: rgba(var(--aura-color-rgb), 0.45);
+  --aura-accent-gradient: linear-gradient(135deg, var(--aura-color), #3b82f6);
+
+  /* Fonts */
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Sizing and Radii */
+  --radius-chassis: 32px;
+  --radius-key: 18px;
+  --radius-display: 20px;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-theme: 0.45s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Day Mode Variables (Explicit: White background, Black chassis, Gray keys)
+   -------------------------------------------------------------------------- */
+body.day-mode {
+  --page-bg: #f8fafc;
+  --page-radial-1: rgba(var(--aura-color-rgb), 0.08);
+  --page-radial-2: rgba(226, 232, 240, 0.6);
+  --page-text: #0f172a;
+  --page-subtext: #64748b;
+  --ambient-blur-opacity: 0.45;
+
+  /* Black Calculator Chassis */
+  --chassis-bg: #0f1115;
+  --chassis-bg-gradient: linear-gradient(160deg, #17191f 0%, #0d0e12 60%, #08090b 100%);
+  --chassis-border: rgba(255, 255, 255, 0.09);
+  --chassis-inner-bevel: inset 0 1px 1px rgba(255, 255, 255, 0.15), inset 0 -1px 2px rgba(0, 0, 0, 0.8);
+  --chassis-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.45),
+    0 12px 24px -8px rgba(15, 23, 42, 0.2),
+    0 0 45px var(--aura-glow-soft);
+
+  /* Screen Display (Inside Black Body) */
+  --display-bg: #090a0d;
+  --display-border: rgba(255, 255, 255, 0.06);
+  --display-text-exp: #94a3b8;
+  --display-text-res: #f8fafc;
+  --display-badge-bg: rgba(255, 255, 255, 0.08);
+  --display-badge-text: #cbd5e1;
+
+  /* Gray-Colored Keys Palette */
+  /* 1. Numbers: Sleek slate gray */
+  --key-num-bg: #2b2f38;
+  --key-num-bg-hover: #363b46;
+  --key-num-bg-active: #22262d;
+  --key-num-text: #f1f5f9;
+  --key-num-border: rgba(255, 255, 255, 0.07);
+
+  /* 2. Operators: Cool graphite steel gray */
+  --key-op-bg: #3f4654;
+  --key-op-bg-hover: #4b5364;
+  --key-op-bg-active: #323844;
+  --key-op-text: #f8fafc;
+  --key-op-border: rgba(255, 255, 255, 0.1);
+
+  /* 3. Functions / Utility: Dark charcoal gray */
+  --key-fn-bg: #1f232b;
+  --key-fn-bg-hover: #292d37;
+  --key-fn-bg-active: #171920;
+  --key-fn-text: #cbd5e1;
+  --key-fn-border: rgba(255, 255, 255, 0.05);
+
+  /* 4. Equals Key: Gray with vibrant Aura Edge */
+  --key-eq-bg: linear-gradient(145deg, #485265, #353d4c);
+  --key-eq-bg-hover: linear-gradient(145deg, #535d72, #3e4657);
+  --key-eq-text: #ffffff;
+  --key-eq-glow: 0 4px 18px var(--aura-glow-soft);
+
+  /* Top Bar / Icons */
+  --btn-icon-bg: #ffffff;
+  --btn-icon-text: #1e293b;
+  --btn-icon-border: #e2e8f0;
+  --btn-icon-hover: #f1f5f9;
+}
+
+/* --------------------------------------------------------------------------
+   Night Mode Variables (Dark Cosmic Backdrop, Illuminated Black Body)
+   -------------------------------------------------------------------------- */
+body.night-mode {
+  --page-bg: #07080b;
+  --page-radial-1: rgba(var(--aura-color-rgb), 0.15);
+  --page-radial-2: rgba(15, 23, 42, 0.85);
+  --page-text: #f8fafc;
+  --page-subtext: #94a3b8;
+  --ambient-blur-opacity: 0.75;
+
+  /* Black Calculator Chassis */
+  --chassis-bg: #0b0c10;
+  --chassis-bg-gradient: linear-gradient(165deg, #13151a 0%, #090a0d 50%, #040507 100%);
+  --chassis-border: rgba(var(--aura-color-rgb), 0.25);
+  --chassis-inner-bevel: inset 0 1px 1px rgba(255, 255, 255, 0.12), inset 0 0 15px rgba(var(--aura-color-rgb), 0.08);
+  --chassis-shadow: 
+    0 25px 60px -10px rgba(0, 0, 0, 0.9),
+    0 0 50px var(--aura-glow-intense),
+    0 0 90px rgba(var(--aura-color-rgb), 0.2);
+
+  /* Screen Display */
+  --display-bg: #050608;
+  --display-border: rgba(var(--aura-color-rgb), 0.15);
+  --display-text-exp: #818cf8;
+  --display-text-res: #ffffff;
+  --display-badge-bg: rgba(var(--aura-color-rgb), 0.14);
+  --display-badge-text: var(--aura-color);
+
+  /* Gray-Colored Keys (Backlit night aesthetic) */
+  --key-num-bg: #1c1f26;
+  --key-num-bg-hover: #262b35;
+  --key-num-bg-active: #15181e;
+  --key-num-text: #f1f5f9;
+  --key-num-border: rgba(255, 255, 255, 0.08);
+
+  --key-op-bg: #2d3340;
+  --key-op-bg-hover: #384050;
+  --key-op-bg-active: #222731;
+  --key-op-text: #e2e8f0;
+  --key-op-border: rgba(var(--aura-color-rgb), 0.2);
+
+  --key-fn-bg: #15171d;
+  --key-fn-bg-hover: #1f222b;
+  --key-fn-bg-active: #101216;
+  --key-fn-text: #94a3b8;
+  --key-fn-border: rgba(255, 255, 255, 0.05);
+
+  --key-eq-bg: linear-gradient(145deg, #374151, #1f2937);
+  --key-eq-bg-hover: linear-gradient(145deg, #4b5563, #2d3748);
+  --key-eq-text: #ffffff;
+  --key-eq-glow: 0 0 22px var(--aura-glow-intense);
+
+  /* Top Bar / Icons */
+  --btn-icon-bg: #13151b;
+  --btn-icon-text: #f8fafc;
+  --btn-icon-border: rgba(255, 255, 255, 0.12);
+  --btn-icon-hover: #1e222c;
+}
+
+/* --------------------------------------------------------------------------
+   Reset & Base Layout
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-main);
+  background-color: var(--page-bg);
+  background-image: 
+    radial-gradient(circle at 18% 20%, var(--page-radial-1) 0%, transparent 40%),
+    radial-gradient(circle at 82% 80%, var(--page-radial-1) 0%, transparent 45%);
+  color: var(--page-text);
+  overflow-x: hidden;
+  transition: background-color var(--transition-theme), color var(--transition-theme);
+  padding: 24px 16px;
+  position: relative;
+}
+
+/* Atmospheric Ambient Blobs */
+.aura-ambient {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity var(--transition-theme), background var(--transition-theme);
+  opacity: var(--ambient-blur-opacity);
+}
+
+.aura-ambient-1 {
+  width: 480px;
+  height: 480px;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, var(--aura-color) 0%, transparent 70%);
+}
+
+.aura-ambient-2 {
+  width: 380px;
+  height: 380px;
+  bottom: -100px;
+  right: 10%;
+  background: radial-gradient(circle, var(--aura-color) 0%, transparent 70%);
+}
+
+/* --------------------------------------------------------------------------
+   Main Container
+   -------------------------------------------------------------------------- */
+.app-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* --------------------------------------------------------------------------
+   Header / Top Navigation
+   -------------------------------------------------------------------------- */
+.aura-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-gem {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: var(--aura-accent-gradient);
+  box-shadow: 0 0 16px var(--aura-color);
+  transform: rotate(45deg);
+  transition: box-shadow var(--transition-normal);
+  animation: pulse-gem 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-gem {
+  0% { transform: rotate(45deg) scale(0.95); box-shadow: 0 0 10px var(--aura-color); }
+  100% { transform: rotate(45deg) scale(1.08); box-shadow: 0 0 22px var(--aura-color); }
+}
+
+.brand-text h1 {
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--page-text);
+  line-height: 1.15;
+}
+
+.brand-tagline {
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--page-subtext);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--btn-icon-bg);
+  border: 1px solid var(--btn-icon-border);
+  color: var(--btn-icon-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+  transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--btn-icon-hover);
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+.icon-btn .icon {
+  width: 17px;
+  height: 17px;
+}
+
+.pill-btn {
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  letter-spacing: -0.05em;
+}
+
+.pill-btn.active {
+  background: var(--aura-color);
+  color: #ffffff;
+  border-color: var(--aura-color);
+  box-shadow: 0 0 12px var(--aura-glow-soft);
+}
+
+/* Day / Night Switch Pill */
+.theme-switch-wrapper {
+  position: relative;
+}
+
+.theme-switch-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 4px 10px 4px 6px;
+  border-radius: 20px;
+  background: var(--btn-icon-bg);
+  border: 1px solid var(--btn-icon-border);
+  color: var(--btn-icon-text);
+  cursor: pointer;
+  outline: none;
+  font-family: var(--font-main);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  transition: all var(--transition-normal);
+}
+
+.theme-switch-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--aura-color);
+}
+
+.switch-pill {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--page-text);
+  color: var(--page-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+}
+
+.icon-wrap {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--transition-fast), transform var(--transition-normal);
+}
+
+.icon-wrap svg {
+  width: 15px;
+  height: 15px;
+}
+
+body.day-mode .moon-wrap {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+body.day-mode .sun-wrap {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+body.night-mode .sun-wrap {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
+
+body.night-mode .moon-wrap {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.theme-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   Calculator Chassis (The Black Body)
+   -------------------------------------------------------------------------- */
+.calculator-chassis {
+  position: relative;
+  width: 100%;
+  background: var(--chassis-bg-gradient);
+  border: 1px solid var(--chassis-border);
+  border-radius: var(--radius-chassis);
+  box-shadow: var(--chassis-shadow), var(--chassis-inner-bevel);
+  padding: 22px 20px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  overflow: hidden;
+  transition: box-shadow var(--transition-theme), border-color var(--transition-theme);
+}
+
+/* Subtle Aura ambient glow behind calculator frame */
+.chassis-aura-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-chassis);
+  background: linear-gradient(135deg, rgba(var(--aura-color-rgb), 0.22), transparent 45%, rgba(var(--aura-color-rgb), 0.12));
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 0;
+  transition: opacity var(--transition-normal);
+}
+
+/* --------------------------------------------------------------------------
+   Display Section (Screen)
+   -------------------------------------------------------------------------- */
+.calculator-display {
+  position: relative;
+  z-index: 1;
+  background: var(--display-bg);
+  border: 1px solid var(--display-border);
+  border-radius: var(--radius-display);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 124px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+  transition: border-color var(--transition-theme);
+}
+
+.display-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.mode-badge, .memory-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--display-badge-bg);
+  color: var(--display-badge-text);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.copy-display-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  transition: color var(--transition-fast);
+}
+
+.copy-display-btn:hover {
+  color: #cbd5e1;
+}
+
+.copy-display-btn .copy-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.copy-tooltip {
+  position: absolute;
+  top: -24px;
+  right: 0;
+  background: var(--aura-color);
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px var(--aura-glow-soft);
+}
+
+.copy-tooltip.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.expression-line {
+  min-height: 22px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--display-text-exp);
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+  transition: color var(--transition-theme);
+}
+
+.result-line-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: right;
+  scrollbar-width: none;
+}
+
+.result-line-container::-webkit-scrollbar {
+  display: none;
+}
+
+.result-line {
+  font-family: var(--font-mono);
+  font-size: 2.35rem;
+  font-weight: 500;
+  color: var(--display-text-res);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  white-space: nowrap;
+  transition: color var(--transition-theme), font-size 0.15s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Keypad Section & Gray-colored Keys
+   -------------------------------------------------------------------------- */
+.calculator-keypad {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Scientific Sub-Grid */
+.scientific-panel {
+  display: none;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  animation: slide-down 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.scientific-panel.open {
+  display: grid;
+}
+
+@keyframes slide-down {
+  0% { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Standard Keypad Grid (4 Columns) */
+.standard-keys-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 11px;
+}
+
+/* Key Base Styles */
+.key {
+  position: relative;
+  height: 58px;
+  border-radius: var(--radius-key);
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 1.25rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.08s ease, background-color var(--transition-fast), border-color var(--transition-fast), box-shadow 0.15s ease;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.key:hover {
+  transform: translateY(-1.5px);
+  filter: brightness(1.08);
+}
+
+.key:active, .key.pressed {
+  transform: translateY(1px) scale(0.96);
+  filter: brightness(0.92);
+}
+
+/* Gray Variant 1: Number Keys */
+.key-num {
+  background-color: var(--key-num-bg);
+  border-color: var(--key-num-border);
+  color: var(--key-num-text);
+  font-size: 1.32rem;
+  font-weight: 600;
+}
+
+.key-num:hover {
+  background-color: var(--key-num-bg-hover);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.key-num:active, .key-num.pressed {
+  background-color: var(--key-num-bg-active);
+}
+
+/* Gray Variant 2: Operator Keys (+, -, ×, ÷) */
+.key-op {
+  background-color: var(--key-op-bg);
+  border-color: var(--key-op-border);
+  color: var(--key-op-text);
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.key-op:hover {
+  background-color: var(--key-op-bg-hover);
+  border-color: var(--aura-color);
+  box-shadow: 0 0 12px var(--aura-glow-soft);
+}
+
+.key-op:active, .key-op.pressed {
+  background-color: var(--key-op-bg-active);
+}
+
+.key-op.active-op {
+  background-color: var(--aura-color);
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 18px var(--aura-color);
+}
+
+/* Gray Variant 3: Utility / Function Keys (AC, backspace, %, ±, ()) */
+.key-fn {
+  background-color: var(--key-fn-bg);
+  border-color: var(--key-fn-border);
+  color: var(--key-fn-text);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.key-fn:hover {
+  background-color: var(--key-fn-bg-hover);
+}
+
+.key-fn:active, .key-fn.pressed {
+  background-color: var(--key-fn-bg-active);
+}
+
+.key-clear {
+  color: #f87171; /* Subtle warning coral red label for AC */
+}
+
+.key-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Gray Variant 4: Scientific Keys */
+.key-sci {
+  height: 44px;
+  font-size: 0.92rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  background-color: var(--key-fn-bg);
+  border-color: var(--key-fn-border);
+  color: var(--key-fn-text);
+  border-radius: 12px;
+}
+
+.key-sci:hover {
+  background-color: var(--key-fn-bg-hover);
+  color: #ffffff;
+}
+
+/* Equals Button Accent */
+.key-equals-action {
+  background: var(--key-eq-bg);
+  color: var(--key-eq-text);
+  box-shadow: var(--key-eq-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(var(--aura-color-rgb), 0.4);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.key-equals-action:hover {
+  background: var(--key-eq-bg-hover);
+  border-color: var(--aura-color);
+  box-shadow: 0 0 24px var(--aura-glow-intense);
+}
+
+/* Key Span layout */
+.key-zero {
+  grid-column: span 1;
+}
+
+/* Key Ripple animation */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-anim 0.45s linear;
+  background-color: rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+}
+
+@keyframes ripple-anim {
+  to {
+    transform: scale(3.5);
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   History Drawer (Sliding Overlay Inside Chassis)
+   -------------------------------------------------------------------------- */
+.history-drawer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 15, 18, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 10;
+  border-radius: var(--radius-chassis);
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transform: translateY(105%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.history-drawer.open {
+  transform: translateY(0);
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+}
+
+.history-header h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.clear-history-btn {
+  background: transparent;
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color var(--transition-fast);
+}
+
+.clear-history-btn:hover {
+  color: #ef4444;
+}
+
+.close-history-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #cbd5e1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: background var(--transition-fast);
+}
+
+.close-history-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.history-item {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: right;
+  transition: all var(--transition-fast);
+}
+
+.history-item:hover {
+  background: rgba(var(--aura-color-rgb), 0.12);
+  border-color: rgba(var(--aura-color-rgb), 0.3);
+  transform: translateX(-2px);
+}
+
+.history-item-exp {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.history-item-res {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.history-empty {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.88rem;
+  margin-top: 40px;
+}
+
+/* --------------------------------------------------------------------------
+   Calculator Footer Hint
+   -------------------------------------------------------------------------- */
+.calculator-footer {
+  text-align: center;
+  padding-top: 4px;
+}
+
+.shortcut-hint {
+  font-size: 0.72rem;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+.shortcut-hint code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #cbd5e1;
+}
+
+/* --------------------------------------------------------------------------
+   Aura Mood Palette Bar (Color Switcher)
+   -------------------------------------------------------------------------- */
+.aura-mood-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: 24px;
+  background: var(--btn-icon-bg);
+  border: 1px solid var(--btn-icon-border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: all var(--transition-theme);
+}
+
+.mood-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--page-subtext);
+}
+
+.mood-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: var(--dot-color);
+  cursor: pointer;
+  outline: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.mood-dot:hover {
+  transform: scale(1.2);
+}
+
+.mood-dot.active {
+  transform: scale(1.25);
+  box-shadow: 0 0 10px var(--dot-color);
+  border-color: #ffffff;
+}
+
+/* Helper Utilities */
+.hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 440px) {
+  body {
+    padding: 14px 10px;
+  }
+  
+  .calculator-chassis {
+    padding: 18px 14px 14px 14px;
+    border-radius: 26px;
+  }
+  
+  .key {
+    height: 52px;
+    border-radius: 14px;
+    font-size: 1.15rem;
+  }
+  
+  .result-line {
+    font-size: 2rem;
+  }
+}
